@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // output: "export", // Disabled for Node.js hosting (Cafe24)
+    output: "standalone", // Enabled for Azure Static Web Apps to reduce size
     images: { unoptimized: true },
     typescript: {
         ignoreBuildErrors: true,
