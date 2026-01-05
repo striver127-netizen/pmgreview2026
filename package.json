@@ -11,7 +11,7 @@
         "postinstall": "next build",
         "dev": "next dev",
         "lint": "eslint .",
-        "start": "node .next/standalone/server.js"
+        "start": "HOSTNAME=0.0.0.0 node .next/standalone/server.js"
     },
     "dependencies": {
         "@hookform/resolvers": "^3.10.0",
