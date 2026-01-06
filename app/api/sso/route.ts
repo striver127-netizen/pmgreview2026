@@ -46,13 +46,13 @@ async function processSSORequest(request: NextRequest, encryptedPayload: string 
 
         // Successful Decryption
         // 1. Create a response that will redirect the user to the homepage
-        // Fix for 0.0.0.0 redirect issue: Use the Host header to build the URL
-        // instead of relying on request.url which might reflect the internal IP.
-        const protocol = request.headers.get("x-forwarded-proto") || "http"
-        const host = request.headers.get("host")
-        const redirectUrl = new URL("/", `${protocol}://${host}`)
+        // Fix for Azure SWA redirect issue: Use request.nextUrl to ensure we stay on the correct domain
+        // instead of relying on the host header which might leak internal infrastructure hostnames.
+        const url = request.nextUrl.clone()
+        url.pathname = "/"
+        url.search = "" // Clear any query parameters (like payload)
 
-        const response = NextResponse.redirect(redirectUrl, {
+        const response = NextResponse.redirect(url, {
             status: 303, // See Other (commonly used for redirect after POST)
         })
 
