@@ -61,10 +61,12 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
                 console.error("Failed to parse user_info cookie", e)
                 // Fallback: try parsing raw string in case it wasn't encoded
                 try {
+                    const parsed = JSON.parse(userInfoStr)
+                    setUser(parsed)
+                } catch (e2: any) {
                     console.error("Failed to parse raw user_info cookie", e2)
                     // DEBUG: Show error on screen instead of redirecting
-                    // window.location.href = "/unauthorized"
-                    setDebugError(`Cookie Parse Error: ${e.message} | Raw: ${userInfoStr}`)
+                    setDebugError(`Cookie Parse Error: ${(e as Error).message} | Fallback Error: ${e2.message} | Raw: ${userInfoStr}`)
                 }
             }
         } else {
