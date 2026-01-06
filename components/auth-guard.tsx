@@ -12,6 +12,22 @@ const AuthContext = createContext<UserInfo | null>(null)
 export function AuthGuard({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<UserInfo | null>(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [debugError, setDebugError] = useState<string | null>(null)
+
+    if (debugError) {
+        return (
+            <div className="p-4 bg-red-100 text-red-700">
+                <h3 className="font-bold">Authentication Debug Error</h3>
+                <p className="break-all">{debugError}</p>
+                <button
+                    className="mt-4 px-4 py-2 bg-red-600 text-white rounded"
+                    onClick={() => window.location.href = "/unauthorized"}
+                >
+                    Go to Unauthorized
+                </button>
+            </div>
+        )
+    }
 
     useEffect(() => {
         // Function to parse cookie safely
@@ -45,18 +61,16 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
                 console.error("Failed to parse user_info cookie", e)
                 // Fallback: try parsing raw string in case it wasn't encoded
                 try {
-                    const parsed = JSON.parse(userInfoStr)
-                    setUser(parsed)
-                } catch (e2) {
                     console.error("Failed to parse raw user_info cookie", e2)
-                    // CRITICAL: If parsing fails, we MUST redirect to ensure user isn't stuck on white screen
-                    window.location.href = "/unauthorized"
+                    // DEBUG: Show error on screen instead of redirecting
+                    // window.location.href = "/unauthorized"
+                    setDebugError(`Cookie Parse Error: ${e.message} | Raw: ${userInfoStr}`)
                 }
             }
         } else {
             // No user cookie found -> Redirect to /unauthorized
-            // Using window.location.href to ensure a full redirect
-            window.location.href = "/unauthorized"
+            // window.location.href = "/unauthorized"
+            setDebugError("No 'user_info' cookie found.")
         }
 
         setIsLoading(false)
