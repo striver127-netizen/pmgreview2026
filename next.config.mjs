@@ -2,7 +2,7 @@ import path from "path";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: "standalone", // Enabled for Azure Static Web Apps to reduce size
+    // output: "standalone", // Removed for Azure Static Web Apps compatibility
     images: { unoptimized: true },
     typescript: {
         ignoreBuildErrors: true,
