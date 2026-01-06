@@ -45,8 +45,18 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    // Matcher: Apply to all paths except those we explicitly exclude in logic above
-    // (though usually better to match EVERYTHING and filter inside, or match specific)
-    // Here we match all paths to ensure security by default
-    matcher: "/:path*",
+    // Matcher: Optimize to exclude static files and paths that don't need auth checking
+    // This reduces the load on the middleware and prevents timeouts
+    matcher: [
+        /*
+         * Match all request paths except for the ones starting with:
+         * - api/sso (login endpoint)
+         * - unauthorized (error page)
+         * - _next/static (static files)
+         * - _next/image (image optimization files)
+         * - favicon.ico (favicon file)
+         * - common image extensions
+         */
+        "/((?!api/sso|unauthorized|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    ],
 }
