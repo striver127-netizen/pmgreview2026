@@ -8,11 +8,10 @@
     },
     "scripts": {
         "build": "next build",
-        "postbuild": "cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/ && echo 'process.env.HOSTNAME = \"0.0.0.0\";' | cat - .next/standalone/server.js > .next/standalone/server.js.tmp && mv .next/standalone/server.js.tmp .next/standalone/server.js",
         "postinstall": "next build",
         "dev": "next dev",
         "lint": "eslint .",
-        "start": "HOSTNAME=0.0.0.0 node .next/standalone/server.js"
+        "start": "node .next/standalone/server.js"
     },
     "dependencies": {
         "@hookform/resolvers": "^3.10.0",

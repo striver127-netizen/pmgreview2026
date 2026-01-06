@@ -1,0 +1,22 @@
+{
+    "platform": {
+        "apiRuntime": "node:20"
+    },
+    "routes": [
+        {
+            "route": "/*",
+            "allowedRoles": [
+                "anonymous"
+            ]
+        }
+    ],
+    "responseOverrides": {
+        "404": {
+            "rewrite": "/404",
+            "statusCode": 404
+        }
+    },
+    "navigationFallback": {
+        "rewrite": "/index.html"
+    }
+}
