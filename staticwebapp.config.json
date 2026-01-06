@@ -15,8 +15,5 @@
             "rewrite": "/404",
             "statusCode": 404
         }
-    },
-    "navigationFallback": {
-        "rewrite": "/index.html"
     }
 }
