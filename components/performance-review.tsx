@@ -136,7 +136,7 @@ export default function PerformanceReview() {
             })),
           }
 
-          const response = await fetch("/api/external/review/submit", {
+          const response = await fetch("/api/review/submit", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
