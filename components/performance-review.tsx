@@ -147,7 +147,8 @@ export default function PerformanceReview() {
           if (response.ok) {
             setCurrentPage("complete")
           } else {
-            alert("제출 중 오류가 발생했습니다. 다시 시도해 주세요.")
+            const errorData = await response.json()
+            alert(`제출 중 오류가 발생했습니다: ${errorData.details || errorData.error || "Unknown error"}`)
           }
         } catch (error) {
           console.error("Submission error:", error)
