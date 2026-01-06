@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
 import { decryptCommon } from "@/lib/crypto"
 
+export async function GET(request: NextRequest) {
+    const payload = request.nextUrl.searchParams.get("payload")
+    return processSSORequest(request, payload)
+}
+
 export async function POST(request: NextRequest) {
     try {
         // Read form-data (e.g. <form action="..." method="POST">)
@@ -8,8 +13,17 @@ export async function POST(request: NextRequest) {
 
         // Assume the PHP server sends the encrypted string in a field named named 'data' or 'payload'
         // You can change 'payload' to whatever field name you use in the standard form post
-        const encryptedPayload = formData.get("payload") as string
+        const payload = formData.get("payload") as string
 
+        return processSSORequest(request, payload)
+    } catch (e) {
+        console.error("SSO POST Error:", e)
+        return NextResponse.json({ error: "Invalid Form Data" }, { status: 400 })
+    }
+}
+
+async function processSSORequest(request: NextRequest, encryptedPayload: string | null) {
+    try {
         if (!encryptedPayload) {
             return NextResponse.json({ error: "No payload provided" }, { status: 400 })
         }
@@ -64,7 +78,7 @@ export async function POST(request: NextRequest) {
 
         return response
     } catch (e) {
-        console.error("SSO Error:", e)
+        console.error("SSO Processing Error:", e)
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
     }
 }
