@@ -29,6 +29,12 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
                 const decoded = decodeURIComponent(userInfoStr)
                 const parsed = JSON.parse(decoded)
                 setUser(parsed)
+
+                // Sliding Expiration: Refresh key for 30 mins
+                // We re-set the same cookie with a new Max-Age
+                const isProduction = process.env.NODE_ENV === "production"
+                const secureFlag = isProduction ? "; Secure" : ""
+                document.cookie = `user_info=${userInfoStr}; path=/; max-age=${60 * 30}; SameSite=Lax${secureFlag}`
             } catch (e) {
                 console.error("Failed to parse user_info cookie", e)
                 // Fallback: try parsing raw string in case it wasn't encoded
@@ -39,6 +45,10 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
                     console.error("Failed to parse raw user_info cookie", e2)
                 }
             }
+        } else {
+            // No user cookie found -> Redirect to /unauthorized
+            // Using window.location.href to ensure a full redirect
+            window.location.href = "/unauthorized"
         }
 
         setIsLoading(false)
