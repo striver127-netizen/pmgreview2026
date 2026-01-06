@@ -8,6 +8,7 @@
     },
     "scripts": {
         "build": "next build",
+        "postbuild": "cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
         "postinstall": "next build",
         "dev": "next dev",
         "lint": "eslint .",

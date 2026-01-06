@@ -23,7 +23,6 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
         }
 
         const userInfoStr = getCookie("user_info")
-
         if (userInfoStr) {
             try {
                 // Try decoding first (Next.js/Browsers often URL encode cookie values)

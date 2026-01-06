@@ -27,28 +27,39 @@ export async function POST(request: NextRequest) {
         let userInfo
         try {
             userInfo = JSON.parse(decryptedJson)
-            console.log(userInfo)
+            //console.log(userInfo)
         } catch (e) {
             return NextResponse.json({ error: "Invalid JSON format in payload" }, { status: 400 })
         }
 
         // Successful Decryption
         // 1. Create a response that will redirect the user to the homepage
-        const response = NextResponse.redirect(new URL("/", request.url), {
+        // Fix for 0.0.0.0 redirect issue: Use the Host header to build the URL
+        // instead of relying on request.url which might reflect the internal IP.
+        const protocol = request.headers.get("x-forwarded-proto") || "http"
+        const host = request.headers.get("host")
+        const redirectUrl = new URL("/", `${protocol}://${host}`)
+
+        const response = NextResponse.redirect(redirectUrl, {
             status: 303, // See Other (commonly used for redirect after POST)
         })
 
         // 2. Set a cookie with the user info
         // allow the client to read it (httpOnly: false) so we can display the name
         // encoded in base64 or URI component to avoid cookie format issues
-        const isProduction = process.env.NODE_ENV === "production"
+        // Detect if we are running locally (even in production mode like 'npm start')
+        const isLocal =
+            request.url.includes("localhost") ||
+            request.url.includes("127.0.0.1") ||
+            request.url.includes("0.0.0.0")
+        const isSecure = process.env.NODE_ENV === "production" && !isLocal
 
         response.cookies.set("user_info", JSON.stringify(userInfo), {
             httpOnly: false,
             path: "/",
             maxAge: 60 * 30, // 30 minutes (Inactivity Timeout)
             sameSite: "lax",
-            secure: isProduction, // HTTPS only in production
+            secure: isSecure, // HTTPS only in production (excluding localhost)
         })
 
         return response

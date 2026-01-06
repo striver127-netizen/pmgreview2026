@@ -76,7 +76,7 @@ export default function PerformanceReview() {
       if (!user_id) return
       setIsLoadingTargets(true)
       try {
-        const response = await fetch(`https://kobe.pmgasia.co.kr/api/review/list?user_id=${user_id}`)
+        const response = await fetch(`/api/external/review/list?user_id=${user_id}`)
         const data = await response.json()
 
         const newTargets: Target[] = []
@@ -136,7 +136,7 @@ export default function PerformanceReview() {
             })),
           }
 
-          const response = await fetch("/api/review/submit", {
+          const response = await fetch("/api/external/review/submit", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
