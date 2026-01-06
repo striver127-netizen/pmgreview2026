@@ -26,12 +26,18 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
         if (userInfoStr) {
             try {
                 // Try decoding first (Next.js/Browsers often URL encode cookie values)
-                const decoded = decodeURIComponent(userInfoStr)
+                let decoded = decodeURIComponent(userInfoStr)
+
+                // Double-decode check: If it still looks encoded (starts with %7B), decode again
+                // This handles cases where Next.js or Browser double-encoded the value
+                if (decoded.startsWith("%7B")) {
+                    decoded = decodeURIComponent(decoded)
+                }
+
                 const parsed = JSON.parse(decoded)
                 setUser(parsed)
 
                 // Sliding Expiration: Refresh key for 30 mins
-                // We re-set the same cookie with a new Max-Age
                 const isProduction = process.env.NODE_ENV === "production"
                 const secureFlag = isProduction ? "; Secure" : ""
                 document.cookie = `user_info=${userInfoStr}; path=/; max-age=${60 * 30}; SameSite=Lax${secureFlag}`
@@ -43,6 +49,8 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
                     setUser(parsed)
                 } catch (e2) {
                     console.error("Failed to parse raw user_info cookie", e2)
+                    // CRITICAL: If parsing fails, we MUST redirect to ensure user isn't stuck on white screen
+                    window.location.href = "/unauthorized"
                 }
             }
         } else {
