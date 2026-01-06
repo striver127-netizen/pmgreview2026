@@ -69,14 +69,20 @@ async function processSSORequest(request: NextRequest, encryptedPayload: string 
             request.url.includes("localhost") ||
             request.url.includes("127.0.0.1") ||
             request.url.includes("0.0.0.0")
-        const isSecure = process.env.NODE_ENV === "production" && !isLocal
 
-        response.cookies.set("user_info", JSON.stringify(userInfo), {
+        // Force Secure in production (Azure SWA is always HTTPS public-facing)
+        // Only disable Secure if we are explicitly on localhost/127.0.0.1
+        const isSecure = process.env.NODE_ENV === "production" || !isLocal
+
+        // IMPORTANT: Cookie values must be encoded (RFC 6265) to handle JSON characters safely
+        const cookieValue = encodeURIComponent(JSON.stringify(userInfo))
+
+        response.cookies.set("user_info", cookieValue, {
             httpOnly: false,
             path: "/",
             maxAge: 60 * 30, // 30 minutes (Inactivity Timeout)
             sameSite: "lax",
-            secure: isSecure, // HTTPS only in production (excluding localhost)
+            secure: isSecure, // HTTPS only in production
         })
 
         return response
