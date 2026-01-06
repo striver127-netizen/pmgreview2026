@@ -8,13 +8,8 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
     try {
-        // Read form-data (e.g. <form action="..." method="POST">)
         const formData = await request.formData()
-
-        // Assume the PHP server sends the encrypted string in a field named named 'data' or 'payload'
-        // You can change 'payload' to whatever field name you use in the standard form post
         const payload = formData.get("payload") as string
-
         return processSSORequest(request, payload)
     } catch (e) {
         console.error("SSO POST Error:", e)
@@ -28,7 +23,10 @@ async function processSSORequest(request: NextRequest, encryptedPayload: string 
             return NextResponse.json({ error: "No payload provided" }, { status: 400 })
         }
 
-        const decryptedJson = decryptCommon(encryptedPayload)
+        // Fix: URL decoding might interpret '+' as ' ' (space).
+        // Since standard Base64 doesn't use spaces, we can safely replace them back to '+'.
+        const sanitizedPayload = encryptedPayload.replace(/ /g, "+")
+        const decryptedJson = decryptCommon(sanitizedPayload)
 
         if (!decryptedJson) {
             return NextResponse.json(
