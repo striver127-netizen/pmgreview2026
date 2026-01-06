@@ -19,8 +19,13 @@ export async function POST(request: NextRequest) {
         })
 
         return NextResponse.json({ success: true, id: evaluation.id }, { status: 201 })
-    } catch (error) {
+    } catch (error: any) {
         console.error("Evaluation submission error:", error)
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
+        // Temporary: Return explicit error to client for debugging
+        return NextResponse.json({
+            error: "Internal Server Error",
+            details: error.message || String(error),
+            stack: error.stack
+        }, { status: 500 })
     }
 }
