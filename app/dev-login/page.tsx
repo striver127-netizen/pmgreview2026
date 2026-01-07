@@ -22,11 +22,21 @@ export default function DevLoginPage() {
         // We use encodeURIComponent to ensure special chars are safe
         const encoded = encodeURIComponent(userInfo)
 
-        // Set cookie for 1 day
-        document.cookie = `user_info=${encoded}; path=/; max-age=86400; SameSite=Lax`
+        const isSecure = window.location.protocol === 'https:'
+        const secureFlag = isSecure ? '; Secure' : ''
 
-        // Also set a backup raw version if the parser fails due to double encoding issues,
-        // though our AuthGuard handles both.
+        // Set cookie for 1 day
+        const cookieString = `user_info=${encoded}; path=/; max-age=86400; SameSite=Lax${secureFlag}`
+        document.cookie = cookieString
+
+        console.log("Attempted to set cookie:", cookieString)
+        console.log("Current document.cookie:", document.cookie)
+
+        // Verify validity
+        if (!document.cookie.includes("user_info=")) {
+            alert("Cookie setting failed! Check console for details. Browser might be blocking cookies.")
+            return
+        }
 
         router.push("/")
     }

@@ -140,6 +140,8 @@ export default function PerformanceReview() {
             })),
           }
 
+          console.log("Submitting payload:", payload)
+
           const response = await fetch("/api/review/submit", {
             method: "POST",
             headers: {
@@ -148,17 +150,30 @@ export default function PerformanceReview() {
             body: JSON.stringify(payload),
           })
 
+          console.log("Response status:", response.status)
+
           if (response.ok) {
             setCurrentPage("complete")
           } else {
-            const errorData = await response.json()
-            const errorMessage = `Error: ${errorData.error}\nDetails: ${errorData.details}\n${errorData.stack || ''}`
-            setSubmitError(errorMessage)
+            const text = await response.text()
+            console.log("Error response text:", text)
+
+            try {
+              const errorData = JSON.parse(text)
+              const errorMessage = `Error: ${errorData.error}\nDetails: ${errorData.details}\n${errorData.stack || ''}`
+              setSubmitError(errorMessage)
+            } catch (e) {
+              setSubmitError(`Error: Status ${response.status} - ${text}`)
+            }
+
             alert("제출 중 오류가 발생했습니다. 아래 에러 메시지를 확인해주세요.")
           }
         } catch (error: any) {
-          console.error("Submission error:", error)
-          const errorMessage = `Network/Unknown Error: ${error.message || String(error)}`
+          console.error("Submission error object:", error)
+          console.error("Error Name:", error.name)
+          console.error("Error Message:", error.message)
+
+          const errorMessage = `Network/Unknown Error: ${error.name} - ${error.message || String(error)}`
           setSubmitError(errorMessage)
           alert("제출 중 오류가 발생했습니다.")
         }
