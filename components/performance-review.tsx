@@ -118,7 +118,11 @@ export default function PerformanceReview() {
     }
   }, [user_id, currentPage])
 
+  // Error display state
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
   const handleNext = async () => {
+    setSubmitError(null) // Clear previous errors
     if (currentStep < currentQuestions.length - 1) {
       setCurrentStep(currentStep + 1)
     } else {
@@ -148,11 +152,15 @@ export default function PerformanceReview() {
             setCurrentPage("complete")
           } else {
             const errorData = await response.json()
-            alert(`제출 중 오류가 발생했습니다: ${errorData.details || errorData.error || "Unknown error"}`)
+            const errorMessage = `Error: ${errorData.error}\nDetails: ${errorData.details}\n${errorData.stack || ''}`
+            setSubmitError(errorMessage)
+            alert("제출 중 오류가 발생했습니다. 아래 에러 메시지를 확인해주세요.")
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error("Submission error:", error)
-          alert("제출 중 오류가 발생했습니다. 다시 시도해 주세요.")
+          const errorMessage = `Network/Unknown Error: ${error.message || String(error)}`
+          setSubmitError(errorMessage)
+          alert("제출 중 오류가 발생했습니다.")
         }
       }
     }
@@ -197,15 +205,40 @@ export default function PerformanceReview() {
   }
 
   return (
-    <ReviewQuestion
-      currentStep={currentStep}
-      answers={answers}
-      questions={currentQuestions}
-      description={reviewDescription}
-      onAnswer={handleAnswer}
-      onNext={handleNext}
-      onPrevious={handlePrevious}
-    />
+    <div className="relative">
+      <ReviewQuestion
+        currentStep={currentStep}
+        answers={answers}
+        questions={currentQuestions}
+        description={reviewDescription}
+        onAnswer={handleAnswer}
+        onNext={handleNext}
+        onPrevious={handlePrevious}
+      />
+      {submitError && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg dark:bg-zinc-900">
+            <h3 className="mb-4 text-lg font-semibold text-red-600">제출 오류</h3>
+            <p className="mb-2 text-sm text-zinc-600 dark:text-zinc-400">
+              에러가 발생했습니다. 아래 내용을 복사해서 전달해주세요.
+            </p>
+            <textarea
+              className="h-40 w-full rounded border p-2 font-mono text-xs"
+              readOnly
+              value={submitError}
+            />
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setSubmitError(null)}
+                className="rounded bg-zinc-200 px-4 py-2 text-sm font-medium hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   )
-}
 
+}
