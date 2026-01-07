@@ -14,21 +14,6 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     const [isLoading, setIsLoading] = useState(true)
     const [debugError, setDebugError] = useState<string | null>(null)
 
-    if (debugError) {
-        return (
-            <div className="p-4 bg-red-100 text-red-700">
-                <h3 className="font-bold">Authentication Debug Error</h3>
-                <p className="break-all">{debugError}</p>
-                <button
-                    className="mt-4 px-4 py-2 bg-red-600 text-white rounded"
-                    onClick={() => window.location.href = "/unauthorized"}
-                >
-                    Go to Unauthorized
-                </button>
-            </div>
-        )
-    }
-
     useEffect(() => {
         // Function to parse cookie safely
         const getCookie = (name: string) => {
@@ -79,6 +64,21 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
         setIsLoading(false)
     }, [])
+
+    if (debugError) {
+        return (
+            <div className="p-4 bg-red-100 text-red-700">
+                <h3 className="font-bold">Authentication Debug Error</h3>
+                <p className="break-all">{debugError}</p>
+                <button
+                    className="mt-4 px-4 py-2 bg-red-600 text-white rounded"
+                    onClick={() => window.location.href = "/unauthorized"}
+                >
+                    Go to Unauthorized
+                </button>
+            </div>
+        )
+    }
 
     // While loading, we render nothing (or a spinner could be added here)
     if (isLoading) {
