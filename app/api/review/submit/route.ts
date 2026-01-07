@@ -37,13 +37,10 @@ export async function POST(request: NextRequest) {
 
         // Call external Point API
         try {
-            const pointApiUrl = `https://kobe.pmgasia.co.kr/api/review/point?user_id=${user_id}&target_id=${target_id}&point=${totalPoint}`
-            console.log("Calling Point API:", pointApiUrl)
+            const pointApiUrl = `https://kobe.pmgasia.co.kr/api/review/point?user_id=${encodeURIComponent(user_id)}&target_id=${encodeURIComponent(target_id)}&point=${totalPoint}`
 
             const pointResponse = await fetch(pointApiUrl)
             const pointResult = await pointResponse.json()
-
-            console.log("Point API Result:", pointResult)
 
             if (pointResult.result !== 'success') {
                 throw new Error("Point sync failed: Result is not success")
