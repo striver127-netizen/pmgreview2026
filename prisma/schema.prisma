@@ -11,11 +11,16 @@ datasource db {
 }
 
 model Evaluation {
-  id        String   @id @default(uuid())
-  user_id   String
-  target_id String
-  answers   Json
-  created_at DateTime @default(now())
+  id            String   @id @default(uuid())
+  user_id       String
+  target_id     String
+  category      Json
+  question_id   Json
+  answer_value  Json
+  question_text Json
+  question_type Json
+  total_point   Int
+  created_at    DateTime @default(now())
 
   @@index([user_id])
   @@index([target_id])
