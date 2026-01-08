@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma"
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
-        const { user_id, target_id, answers } = body
+        const { user_id, user_nm, target_id, answers } = body
 
         if (!user_id || !target_id || !answers) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
         const evaluation = await prisma.evaluation.create({
             data: {
                 user_id,
+                user_nm,
                 target_id,
                 category: categories,
                 question_id: questionIds,

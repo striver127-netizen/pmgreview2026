@@ -9,7 +9,7 @@ import { ReviewQuestion, questions } from "@/components/review-question"
 import { questionsType1, questionsType2, questionsType3, questionsType4 } from "@/components/questions-data"
 
 export default function PerformanceReview() {
-  const { user_id } = useAuth()
+  const { user_id, user_nm } = useAuth()
   const [currentPage, setCurrentPage] = useState<"intro" | "selection" | "review" | "complete">(
     "intro"
   )
@@ -134,6 +134,7 @@ export default function PerformanceReview() {
         try {
           const payload = {
             user_id,
+            user_nm,
             target_id: selectedPerson,
             answers: currentQuestions.map((q) => ({
               question_id: q.id,

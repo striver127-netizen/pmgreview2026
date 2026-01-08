@@ -1,5 +1,7 @@
 "use client"
 
+import { RATING_OPTIONS } from "./questions-data"
+
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -153,14 +155,7 @@ export function ReviewQuestion({
                         {currentQuestion.type === "rating5" && (
                             <div className="space-y-4 pt-4">
                                 <RadioGroup value={answers[currentQuestion.id]} onValueChange={onAnswer} className="space-y-3">
-                                    {[
-                                        { value: "5", label: "Outstanding", desc: "매우 뛰어남, 기대 수준을 크게 상회하며 지속적으로 탁월한 성과를 보여줍니다." },
-                                        { value: "4", label: "Exceeds Expectations", desc: "뛰어남, 대부분의 업무에서 기대 이상의 성과를 안정적으로 달성합니다." },
-                                        { value: "3", label: "Meets Expectations", desc: "양호함, 업무를 정상적으로 수행하며 기대 수준을 달성합니다." },
-                                        { value: "2", label: "Below Expectations", desc: "노력이 필요함, 기본적인 역할은 수행하지만 개선이 필요한 부분이 보입니다." },
-                                        { value: "1", label: "Unsatisfactory", desc: "부족함, 업무 수행에 어려움이 있으며 명확한 개선 노력이 요구됩니다." },
-                                        { value: "0", label: "Needs Improvement", desc: "매우 부족함, 기대 수준에 크게 미치지 못하며 즉각적인 개선과 지원이 필요합니다." },
-                                    ].map((option) => (
+                                    {RATING_OPTIONS.rating5.map((option) => (
                                         <div key={option.value} className="flex items-start gap-3 rounded-lg border p-4 transition-colors hover:bg-muted/50">
                                             <RadioGroupItem value={option.value} id={option.value} className="mt-0.5" />
                                             <Label htmlFor={option.value} className="flex-1 cursor-pointer space-y-1">
@@ -176,14 +171,7 @@ export function ReviewQuestion({
                         {currentQuestion.type === "rating10" && (
                             <div className="space-y-4 pt-4">
                                 <RadioGroup value={answers[currentQuestion.id]} onValueChange={onAnswer} className="space-y-3">
-                                    {[
-                                        { value: "10", label: "Outstanding", desc: "매우 뛰어남, 기대 수준을 크게 상회하며 지속적으로 탁월한 성과를 보여줍니다." },
-                                        { value: "8", label: "Exceeds Expectations", desc: "뛰어남, 대부분의 업무에서 기대 이상의 성과를 안정적으로 달성합니다." },
-                                        { value: "6", label: "Meets Expectations", desc: "양호함, 업무를 정상적으로 수행하며 기대 수준을 달성합니다." },
-                                        { value: "4", label: "Below Expectations", desc: "노력이 필요함, 기본적인 역할은 수행하지만 개선이 필요한 부분이 보입니다." },
-                                        { value: "2", label: "Unsatisfactory", desc: "부족함, 업무 수행에 어려움이 있으며 명확한 개선 노력이 요구됩니다." },
-                                        { value: "0", label: "Needs Improvement", desc: "매우 부족함, 기대 수준에 크게 미치지 못하며 즉각적인 개선과 지원이 필요합니다." },
-                                    ].map((option) => (
+                                    {RATING_OPTIONS.rating10.map((option) => (
                                         <div key={option.value} className="flex items-start gap-3 rounded-lg border p-4 transition-colors hover:bg-muted/50">
                                             <RadioGroupItem value={option.value} id={option.value} className="mt-0.5" />
                                             <Label htmlFor={option.value} className="flex-1 cursor-pointer space-y-1">
@@ -199,14 +187,7 @@ export function ReviewQuestion({
                         {currentQuestion.type === "rating15" && (
                             <div className="space-y-4 pt-4">
                                 <RadioGroup value={answers[currentQuestion.id]} onValueChange={onAnswer} className="space-y-3">
-                                    {[
-                                        { value: "15", label: "Outstanding", desc: "매우 뛰어남, 기대 수준을 크게 상회하며 지속적으로 탁월한 성과를 보여줍니다." },
-                                        { value: "12", label: "Exceeds Expectations", desc: "뛰어남, 대부분의 업무에서 기대 이상의 성과를 안정적으로 달성합니다." },
-                                        { value: "10", label: "Meets Expectations", desc: "양호함, 업무를 정상적으로 수행하며 기대 수준을 달성합니다." },
-                                        { value: "7", label: "Below Expectations", desc: "노력이 필요함, 기본적인 역할은 수행하지만 개선이 필요한 부분이 보입니다." },
-                                        { value: "4", label: "Unsatisfactory", desc: "부족함, 업무 수행에 어려움이 있으며 명확한 개선 노력이 요구됩니다." },
-                                        { value: "0", label: "Needs Improvement", desc: "매우 부족함, 기대 수준에 크게 미치지 못하며 즉각적인 개선과 지원이 필요합니다." },
-                                    ].map((option) => (
+                                    {RATING_OPTIONS.rating15.map((option) => (
                                         <div key={option.value} className="flex items-start gap-3 rounded-lg border p-4 transition-colors hover:bg-muted/50">
                                             <RadioGroupItem value={option.value} id={option.value} className="mt-0.5" />
                                             <Label htmlFor={option.value} className="flex-1 cursor-pointer space-y-1">
@@ -222,14 +203,7 @@ export function ReviewQuestion({
                         {currentQuestion.type === "rating20" && (
                             <div className="space-y-4 pt-4">
                                 <RadioGroup value={answers[currentQuestion.id]} onValueChange={onAnswer} className="space-y-3">
-                                    {[
-                                        { value: "20", label: "Outstanding", desc: "매우 뛰어남, 기대 수준을 크게 상회하며 지속적으로 탁월한 성과를 보여줍니다." },
-                                        { value: "16", label: "Exceeds Expectations", desc: "뛰어남, 대부분의 업무에서 기대 이상의 성과를 안정적으로 달성합니다." },
-                                        { value: "12", label: "Meets Expectations", desc: "양호함, 업무를 정상적으로 수행하며 기대 수준을 달성합니다." },
-                                        { value: "8", label: "Below Expectations", desc: "노력이 필요함, 기본적인 역할은 수행하지만 개선이 필요한 부분이 보입니다." },
-                                        { value: "4", label: "Unsatisfactory", desc: "부족함, 업무 수행에 어려움이 있으며 명확한 개선 노력이 요구됩니다." },
-                                        { value: "0", label: "Needs Improvement", desc: "매우 부족함, 기대 수준에 크게 미치지 못하며 즉각적인 개선과 지원이 필요합니다." },
-                                    ].map((option) => (
+                                    {RATING_OPTIONS.rating20.map((option) => (
                                         <div key={option.value} className="flex items-start gap-3 rounded-lg border p-4 transition-colors hover:bg-muted/50">
                                             <RadioGroupItem value={option.value} id={option.value} className="mt-0.5" />
                                             <Label htmlFor={option.value} className="flex-1 cursor-pointer space-y-1">
@@ -249,29 +223,7 @@ export function ReviewQuestion({
                                     onValueChange={onAnswer}
                                     className="space-y-3"
                                 >
-                                    {[
-                                        {
-                                            value: "10",
-                                            label: "Excellent",
-                                            desc: "매우 뛰어남",
-                                        },
-                                        {
-                                            value: "4",
-                                            label: "Very Good",
-                                            desc: "Often exceeds expectations",
-                                        },
-                                        { value: "3", label: "Good", desc: "Meets expectations" },
-                                        {
-                                            value: "2",
-                                            label: "Fair",
-                                            desc: "Sometimes meets expectations",
-                                        },
-                                        {
-                                            value: "1",
-                                            label: "Needs Improvement",
-                                            desc: "Rarely meets expectations",
-                                        },
-                                    ].map((option) => (
+                                    {RATING_OPTIONS.rating.map((option) => (
                                         <div
                                             key={option.value}
                                             className="flex items-start gap-3 rounded-lg border p-4 transition-colors hover:bg-muted/50"

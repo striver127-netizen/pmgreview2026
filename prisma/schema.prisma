@@ -14,6 +14,7 @@ datasource db {
 model Evaluation {
   id            String   @id @default(uuid())
   user_id       String
+  user_nm       String?
   target_id     String
   category      Json
   question_id   Json
