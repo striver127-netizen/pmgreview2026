@@ -83,9 +83,10 @@ export default function PerformanceReview() {
         const newTargets: Target[] = []
 
         // Helper to map API response items to Target objects
-        const mapItems = (items: any[], type: "OT" | "ST" | "GM" | "TL") => {
+        const mapItems = (items: any, type: "OT" | "ST" | "GM" | "TL") => {
+          if (!items || !Array.isArray(items)) return []
           return (
-            items?.map((item) => ({
+            items.map((item) => ({
               target_id: item.user_id,
               target_nm: item.user_nm,
               target_type: type,
