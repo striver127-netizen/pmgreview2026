@@ -78,6 +78,7 @@ export default function PerformanceReview() {
       try {
         const response = await fetch(`/api/external/review/list?user_id=${user_id}`)
         const data = await response.json()
+        console.log("Review List Data:", data)
 
         const newTargets: Target[] = []
 
