@@ -14,7 +14,7 @@ export interface Question {
     question: string
     options?: string[]
 }
-
+//실제 파일은 ./questions-data.ts에 있음.
 export const questions: Question[] = [
     {
         id: "1",
