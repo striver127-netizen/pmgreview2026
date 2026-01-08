@@ -94,6 +94,7 @@ interface ReviewQuestionProps {
     onAnswer: (value: string) => void
     onNext: () => void
     onPrevious: () => void
+    isSubmitting?: boolean // New prop
 }
 
 export function ReviewQuestion({
@@ -104,6 +105,7 @@ export function ReviewQuestion({
     onAnswer,
     onNext,
     onPrevious,
+    isSubmitting = false, // Default to false
 }: ReviewQuestionProps) {
     const currentQuestion = questions[currentStep]
     const progress = ((currentStep + 1) / questions.length) * 100
@@ -366,10 +368,13 @@ export function ReviewQuestion({
                     </div>
                     <Button
                         onClick={onNext}
-                        disabled={!isAnswered}
+                        disabled={!isAnswered || isSubmitting} // Disable when submitting
                         className={`min-w-24 ${currentStep === questions.length - 1 ? "bg-green-600 hover:bg-green-700" : ""}`}
                     >
-                        {currentStep === questions.length - 1 ? "Submit" : "Next"}
+                        {/* Show loading text if submitting on last step */}
+                        {currentStep === questions.length - 1
+                            ? (isSubmitting ? "Submitting..." : "Submit")
+                            : "Next"}
                     </Button>
                 </div>
             </div>

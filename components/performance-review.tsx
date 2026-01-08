@@ -122,6 +122,7 @@ export default function PerformanceReview() {
 
   // Error display state
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleNext = async () => {
     setSubmitError(null) // Clear previous errors
@@ -129,6 +130,7 @@ export default function PerformanceReview() {
       setCurrentStep(currentStep + 1)
     } else {
       if (confirm("평가를 완료합니다. 해당 내용으로 제출하시겠습니까?")) {
+        setIsSubmitting(true)
         try {
           const payload = {
             user_id,
@@ -178,6 +180,8 @@ export default function PerformanceReview() {
           const errorMessage = `Network/Unknown Error: ${error.name} - ${error.message || String(error)}`
           setSubmitError(errorMessage)
           alert("제출 중 오류가 발생했습니다.")
+        } finally {
+          setIsSubmitting(false)
         }
       }
     }
@@ -231,6 +235,7 @@ export default function PerformanceReview() {
         onAnswer={handleAnswer}
         onNext={handleNext}
         onPrevious={handlePrevious}
+        isSubmitting={isSubmitting} // Pass the loading state
       />
       {submitError && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
