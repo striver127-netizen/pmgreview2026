@@ -68,7 +68,7 @@ export function ReviewSelection({
                                                 {person.target_nm}
                                             </span>
                                             <span className="text-sm opacity-80 font-normal">
-                                                {person.target_id}({person.target_grant})
+                                                {person.target_id}
                                             </span>
                                         </Button>
                                     ))
