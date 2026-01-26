@@ -28,7 +28,7 @@ export default function PerformanceReview() {
       return "Type1"
     } else {
       if (target.target_grant === "leader") return "Type2"
-      const teamIds = ["4", "42", "43", "44", "38"]
+      const teamIds = ["4", "42", "43", "44", "38", "35"]
       if (target.target_team_id && teamIds.includes(String(target.target_team_id))) return "Type3"
       return "Type4"
     }
